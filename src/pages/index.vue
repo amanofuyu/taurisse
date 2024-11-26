@@ -13,7 +13,7 @@ async function greet() {
 <template>
   <main class="container bg-primary text-primary-content">
     <h1>Welcome to Tauri + Vue</h1>
-    <button @click="toggleDark()">Greet</button>
+    <button class="i-cus-vue" @click="toggleDark()">Greet</button>
 
     <div class="row">
       <a href="https://vitejs.dev" target="_blank">
