@@ -20,7 +20,8 @@
         "center": true,
         "decorations": false,
         "transparent": true,
-        "useHttpsScheme": true
+        "useHttpsScheme": true,
+        "devtools": false
       }
     ],
     "security": {
