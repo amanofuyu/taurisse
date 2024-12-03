@@ -1,3 +1,11 @@
+<script setup lang="ts">
+// onMounted(() => {
+//   useEventListener('contextmenu', (e) => {
+//     e.preventDefault()
+//   })
+// })
+</script>
+
 <template>
   <div class="w-full h-screen flex bg-base-100 text-base-content rounded-3xl overflow-hidden maximized:rounded-none">
     <Sidebar />
