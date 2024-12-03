@@ -34,7 +34,7 @@ export default defineConfig(async () => ({
         },
       ],
       dts: true,
-      dirs: ['./src/composables'],
+      dirs: ['./src/composables', './src/stores'],
       vueTemplate: true,
     }),
 
