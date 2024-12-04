@@ -1,7 +1,19 @@
 <script setup lang="ts">
-import { convertFileSrc } from '@tauri-apps/api/core'
+import { convertFileSrc, invoke } from '@tauri-apps/api/core'
 import { open } from '@tauri-apps/plugin-dialog'
-import { readDir, readFile, stat } from '@tauri-apps/plugin-fs'
+
+interface FileInfoGet {
+  name: string
+  path: string
+  size: number
+  md5: string
+  mtime: string
+  birthtime: string
+}
+
+interface FileInfoConvert extends FileInfoGet {
+  src: string
+}
 
 async function chooseDirs() {
   const dirs = await open({
@@ -13,27 +25,12 @@ async function chooseDirs() {
     return
   }
 
-  const dirEntries = (await Promise.all(
-    dirs.map(dir => readDir(dir)),
-  )).flatMap((entries, i) => entries.map(entry => ({ ...entry, dir: dirs[i] }))).filter(entry => entry.isFile)
+  const res = (await Promise.all(dirs.map(dir => invoke<Array<FileInfoGet>>('get_file_info', { path: dir, extensions: ['svg', 'png'] })))).flat().map(item => ({
+    ...item,
+    src: convertFileSrc(item.path),
+  })) satisfies Array<FileInfoConvert>
 
-  console.log(dirEntries)
-
-  const filePaths = dirEntries.map(entry => convertFileSrc(`${entry.dir}/${entry.name}`))
-
-  console.log(filePaths)
-
-  const fileStats = await Promise.all(
-    dirEntries.map(entry => (stat(`${entry.dir}/${entry.name}`))),
-  )
-
-  console.log(fileStats)
-
-  const files = await Promise.all(
-    dirEntries.map(entry => readFile(`${entry.dir}/${entry.name}`)),
-  )
-
-  console.log(files)
+  console.log(res)
 }
 </script>
 
